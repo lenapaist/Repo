@@ -54,7 +54,4 @@ showTypeOf(adaptive);
 
 console.log(screens.split(""));
 console.log(getRollBackMessage(fullPrice));
-console.log(allServicePrices);
-console.log(fullPrice);
-console.log(getTitle());
 console.log(servicePercentPrice);
