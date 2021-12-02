@@ -11,7 +11,10 @@ let title,
     service2;
 
 const isNumber = function (num) {
-    return !isNaN(parseFloat(num)) && isFinite(num);
+    if (!/\s/.test(num)) {
+        return !isNaN(parseFloat(num)) && isFinite(num);
+    }
+    return false;
 };
 
 const asking = function () {
