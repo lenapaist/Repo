@@ -7,8 +7,8 @@ const buttonPlus = document.querySelector(".screen-btn");
 const otherItemsPersent = document.querySelectorAll(".other-items.percent");
 const otherItemsNumber = document.querySelectorAll(".other-items.number");
 const inputTypeRange = document.querySelector(".rollback [type='range']");
-const spanRangeValue = document.querySelector(".rollback .range-value");
-const totalInput = Array.from(document.getElementsByClassName("total-input"));
+let spanRangeValue = document.querySelector(".rollback .range-value");
+let totalInput = Array.from(document.getElementsByClassName("total-input"));
 const total = totalInput[0];
 const totalCount = totalInput[1];
 const totalCountOther = totalInput[2];
@@ -19,8 +19,8 @@ const optionsCms = document.querySelector(".hidden-cms-variants");
 const dopOptionsCmsBlock = document.querySelector(
     ".hidden-cms-variants > .main-controls__input",
 );
-const allCheckboxElements = document.querySelectorAll(
-    ".main-controls__views.element input[type=checkbox]",
+let allCheckboxElements = document.querySelectorAll(
+    ".main-controls__views input[type=checkbox]",
 );
 let cmsSelect = document.getElementById("cms-select");
 let cmsOtherInput = document.getElementById("cms-other-input");
@@ -85,6 +85,9 @@ let appData = {
             allSelectControlElements.forEach((item) =>
                 item.setAttribute("disabled", true),
             );
+            allCheckboxElements.forEach((item) =>
+                item.setAttribute("disabled", true),
+            );
             cmsOtherInput.setAttribute("disabled", true);
             appData.addScreens();
             appData.addServices();
@@ -95,8 +98,11 @@ let appData = {
         }
     },
     reset: function () {
+        let inputRange = document.querySelector(
+            ".main-controls__range input[type=range]",
+        );
         screens = document.querySelectorAll(".screen");
-
+        totalInput = Array.from(document.getElementsByClassName("total-input"));
         allEnterControlElemenst.forEach((item) => {
             item.removeAttribute("disabled");
             item.value = "";
@@ -105,7 +111,13 @@ let appData = {
             item.removeAttribute("disabled");
             item.value = "";
         });
-        allCheckboxElements.forEach((item) => (item.checked = false));
+        totalInput.forEach((item) => (item.value = 0));
+        allCheckboxElements.forEach((item) => {
+            item.checked = false;
+            item.removeAttribute("disabled");
+        });
+        inputRange.value = 0;
+        spanRangeValue.textContent = "0%";
         cmsOtherInput.removeAttribute("disabled");
         cmsOtherInput.value = "";
         for (let i = 1; i <= screens.length - 1; i++) {
@@ -208,6 +220,9 @@ let appData = {
         allEnterControlElemenst = document.querySelectorAll(
             ".main-controls__item screen input[type=text]",
         );
+        allCheckboxElements = document.querySelectorAll(
+            ".main-controls input[type=chexbox]",
+        );
     },
     addRollBack: function (event) {
         appData.rollback = Number(event.currentTarget.value);
@@ -221,7 +236,6 @@ let appData = {
         }
     },
     addPrices: function () {
-        console.log(appData);
         for (let screen of this.screens) {
             this.screenPrice += Number(screen.price);
         }
@@ -237,12 +251,8 @@ let appData = {
                 this.screenPrice +
                 this.servicePricesNumber +
                 this.servicePricesPercent;
-            console.log(fullPrice);
             this.fullPrice =
                 fullPrice + fullPrice * (this.servicesCMSPercent / 100);
-            console.log(
-                fullPrice + fullPrice * (this.servicesCMSPercent / 100),
-            );
         } else {
             this.fullPrice =
                 this.screenPrice +
